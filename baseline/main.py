@@ -305,6 +305,9 @@ def main():
                         help="Device (cuda or cpu)")
     parser.add_argument("--local_rank", type=int, default=-1,
                         help="Local rank for distributed training (-1: not distributed)")
+    
+    parser.add_argument("--n_gpu", type=int, default=1,
+                        help="Number of gpus to make use of")
     args = parser.parse_args()
 
     # Setup logging
@@ -340,7 +343,7 @@ def main():
         torch.cuda.set_device(args.local_rank)
         device = torch.device("cuda", args.local_rank)
         torch.distributed.init_process_group(backend="nccl", init_method='env://')
-    args.n_gpu = torch.cuda.device_count() if not args.distributed else 1
+    #args.n_gpu = torch.cuda.device_count() if not args.distributed else 1
     args.device = device
 
     # Set seed
